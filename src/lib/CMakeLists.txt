@@ -1,0 +1,12 @@
+add_library(libmatching_engine
+    STATIC
+    order.cpp
+    order_book.cpp
+    matching_engine.cpp)
+target_link_libraries(libmatching_engine
+    PRIVATE
+    project_options
+    project_warnings)
+target_include_directories(libmatching_engine
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include)
