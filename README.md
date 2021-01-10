@@ -16,15 +16,15 @@ $ cmake --build build
 This will put the artifacts in src/build. The matching engine itself will be at src/build/app/matching_engine and the test
 binary will be at src/build/test/test_matching_engine.
 
-The scripts `run.sh` and `run_tests.sh` will run the application and the unit tests (respectively) in a Docker container.
+The scripts `run.sh` and `run_tests.sh` will run the application and the unit tests respectively in a Docker container.
 
 ## Design Approach
 
 I approached this exercise by working on the order book data structure, then getting the orders into the book and finally by implementing
-a basic matching algorithm.
+a basic matching algorithm. I finished the exercise by adding a basic suite of unit tests.
 
 Since the orders need to be sorted by price, I chose to use the standard `std::multimap`. This had an unexpected benefit; the requirements
-of `std::multimap` state that if a key already exist, the new value should be inserted at the upper range of the already inserted keys.
+of `std::multimap` state that if a key already exists, the new value should be inserted at the upper range of the already inserted keys.
 Thus, the time invariant is automatically maintained by insertion order.
 
 In order to meet the requirement of printing the remaining resting orders at the end of the input, there is a second index that maintains
