@@ -5,7 +5,7 @@
 
 namespace gemini {
 class Order {
-  public:
+   public:
     Order(unsigned long sequenceNumber, const NewOrder &newOrder);
 
     // movable, non-copyable
@@ -27,7 +27,7 @@ class Order {
 
     std::string ToString() const;
 
-  private:
+   private:
     unsigned long m_sequenceNumber;
     std::string m_orderId;
     std::string m_symbol;
@@ -35,6 +35,6 @@ class Order {
     unsigned long m_price;
     unsigned long m_quantity;
 };
-} // namespace gemini
+}  // namespace gemini
 
-#endif // MATCHING_ENGINE__ORDER_H
+#endif  // MATCHING_ENGINE__ORDER_H

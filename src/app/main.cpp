@@ -1,11 +1,10 @@
+#include <cassert>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include "matching_engine.h"
 #include "messages.h"
-
-#include <cassert>
-#include <string>
-#include <vector>
 
 using namespace gemini;
 
@@ -59,19 +58,18 @@ NewOrder ConstructNewOrderFromFields(const std::vector<std::string> &fields) {
 }
 
 void PrintTrade(const Trade &trade) {
-    std::cout << "TRADE " << trade.symbol << ' ' << trade.orderId << ' '
-              << trade.contraOrderId << ' ' << trade.quantity << ' '
-              << trade.price << '\n';
+    std::cout << "TRADE " << trade.symbol << ' ' << trade.orderId << ' ' << trade.contraOrderId << ' ' << trade.quantity
+              << ' ' << trade.price << '\n';
 }
 
 int main() {
     MatchingEngine engine{[](const MessageHeader &msg) {
         switch (msg.messageType) {
-        case MessageTypeEnum::Trade:
-            PrintTrade(static_cast<const Trade &>(msg));
-            break;
-        default:
-            assert(!"unexpected message type");
+            case MessageTypeEnum::Trade:
+                PrintTrade(static_cast<const Trade &>(msg));
+                break;
+            default:
+                assert(!"unexpected message type");
         }
     }};
 

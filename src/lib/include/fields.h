@@ -14,14 +14,14 @@ enum Type {
 
 constexpr const char *ToString(Type type) {
     switch (type) {
-    case Type::Buy:
-        return "BUY";
-    case Type::Sell:
-        return "SELL";
-    case Type::Unknown:
-        [[fallthrough]];
-    default:
-        return "<UNKNOWN>";
+        case Type::Buy:
+            return "BUY";
+        case Type::Sell:
+            return "SELL";
+        case Type::Unknown:
+            [[fallthrough]];
+        default:
+            return "<UNKNOWN>";
     }
     return "<UNKNOWN>";
 }
@@ -41,7 +41,7 @@ constexpr Type ContraSide(Type type) {
     }
     return Type::Buy;
 }
-} // namespace SideEnum
+}  // namespace SideEnum
 
-} // namespace gemini
-#endif // MATCHING_ENGINE__FIELDS_H
+}  // namespace gemini
+#endif  // MATCHING_ENGINE__FIELDS_H

@@ -4,8 +4,7 @@
 
 namespace gemini {
 
-OrderBook::OrderBook(std::string symbol, OrderMatchedFn fn)
-    : m_symbol(std::move(symbol)), m_orderMatched(fn) {}
+OrderBook::OrderBook(std::string symbol, OrderMatchedFn fn) : m_symbol(std::move(symbol)), m_orderMatched(fn) {}
 
 void OrderBook::AddOrder(Order order) {
     // generate matches
@@ -26,8 +25,7 @@ void OrderBook::AddOrder(Order order) {
 
         // the book now owns the order
 
-        indexes.bySequenceNumber.insert(
-            std::make_pair(order.SequenceNumber(), it));
+        indexes.bySequenceNumber.insert(std::make_pair(order.SequenceNumber(), it));
     }
 }
 
@@ -52,8 +50,7 @@ OrderBook::Indexes OrderBook::GetIndexesForSide(SideEnum::Type side) noexcept {
     return {m_asks, m_asksBySequenceNumber};
 }
 
-bool OrderBook::OrdersMatch(const Order &inboundOrder,
-                            const Order &restingOrder) {
+bool OrderBook::OrdersMatch(const Order &inboundOrder, const Order &restingOrder) {
     if (inboundOrder.Side() == SideEnum::Buy) {
         return restingOrder.Price() <= inboundOrder.Price();
     } else {
@@ -66,17 +63,14 @@ std::vector<Trade> OrderBook::GenerateTrades(Order &inboundOrder) {
     std::vector<OrderIterator> filledRestingOrders;
 
     // scan the opposite side for matching resting orders
-    auto contraSide =
-        inboundOrder.Side() == SideEnum::Buy ? SideEnum::Sell : SideEnum::Buy;
+    auto contraSide = inboundOrder.Side() == SideEnum::Buy ? SideEnum::Sell : SideEnum::Buy;
     auto contraSideIndexes = GetIndexesForSide(contraSide);
 
     // run until we hit an order that doesn't match
     auto it = contraSideIndexes.byPriceLevel.begin();
-    while (it != contraSideIndexes.byPriceLevel.end() &&
-           OrdersMatch(inboundOrder, it->second)) {
+    while (it != contraSideIndexes.byPriceLevel.end() && OrdersMatch(inboundOrder, it->second)) {
         // calculate traded quantity
-        auto tradeQuantity =
-            std::min(inboundOrder.Quantity(), it->second.Quantity());
+        auto tradeQuantity = std::min(inboundOrder.Quantity(), it->second.Quantity());
         auto tradePrice = it->second.Price();
 
         Trade trade;
@@ -108,12 +102,11 @@ std::vector<Trade> OrderBook::GenerateTrades(Order &inboundOrder) {
 
     for (auto filledOrderIt : filledRestingOrders) {
         // remove from secondary indexes, then primary
-        contraSideIndexes.bySequenceNumber.erase(
-            filledOrderIt->second.SequenceNumber());
+        contraSideIndexes.bySequenceNumber.erase(filledOrderIt->second.SequenceNumber());
         contraSideIndexes.byPriceLevel.erase(filledOrderIt);
     }
 
     return trades;
 }
 
-} // namespace gemini
+}  // namespace gemini

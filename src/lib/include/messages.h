@@ -15,14 +15,14 @@ enum Type {
 
 constexpr const char *ToString(Type type) {
     switch (type) {
-    case Type::NewOrder:
-        return "NewOrder";
-    case Type::Trade:
-        return "Trade";
-    case Type::Unknown:
-        [[fallthrough]];
-    default:
-        return "<UNKNOWN>";
+        case Type::NewOrder:
+            return "NewOrder";
+        case Type::Trade:
+            return "Trade";
+        case Type::Unknown:
+            [[fallthrough]];
+        default:
+            return "<UNKNOWN>";
     }
 }
 
@@ -34,7 +34,7 @@ inline Type FromString(const std::string &str) {
     }
     return Type::Unknown;
 }
-} // namespace MessageTypeEnum
+}  // namespace MessageTypeEnum
 
 struct MessageHeader {
     MessageTypeEnum::Type messageType = MessageTypeEnum::Unknown;
@@ -60,12 +60,11 @@ struct Trade : MessageHeader {
     Trade() : MessageHeader{MessageTypeEnum::Trade} {}
 
     inline bool operator==(const Trade &rhs) const {
-        return (symbol == rhs.symbol && orderId == rhs.orderId &&
-                contraOrderId == rhs.contraOrderId &&
+        return (symbol == rhs.symbol && orderId == rhs.orderId && contraOrderId == rhs.contraOrderId &&
                 quantity == rhs.quantity && price == rhs.price);
     }
 };
 
-} // namespace gemini
+}  // namespace gemini
 
 #endif

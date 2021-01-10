@@ -1,11 +1,11 @@
 #include "catch.hpp"
-
 #include "matching_engine.h"
 
 using namespace gemini;
 
 namespace Catch {
-template <> struct StringMaker<gemini::Trade> {
+template <>
+struct StringMaker<gemini::Trade> {
     static std::string convert(const gemini::Trade &trade) {
         std::string result;
 
@@ -22,10 +22,9 @@ template <> struct StringMaker<gemini::Trade> {
         return result;
     }
 };
-} // namespace Catch
+}  // namespace Catch
 
-NewOrder ConstructNewOrder(std::string orderId, std::string symbol,
-                           SideEnum::Type side, unsigned long quantity,
+NewOrder ConstructNewOrder(std::string orderId, std::string symbol, SideEnum::Type side, unsigned long quantity,
                            unsigned long price) {
     NewOrder newOrder;
 
@@ -38,8 +37,7 @@ NewOrder ConstructNewOrder(std::string orderId, std::string symbol,
     return newOrder;
 }
 
-Trade ConstructTrade(std::string symbol, std::string orderId,
-                     std::string contraOrderId, unsigned long quantity,
+Trade ConstructTrade(std::string symbol, std::string orderId, std::string contraOrderId, unsigned long quantity,
                      unsigned long price) {
     Trade trade;
 
@@ -80,8 +78,7 @@ TEST_CASE("Test basic order fill", "[basic]") {
     });
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder2 =
-        ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1234);
+    auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1234);
 
     std::vector<Trade> expectedTrades;
     expectedTrades.push_back(ConstructTrade("BTCUSD", "2", "1", 100, 1234));
@@ -137,8 +134,7 @@ TEST_CASE("Test basic non-matching orders", "[basic]") {
     });
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder2 =
-        ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1235);
+    auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1235);
 
     engine.OnMessage(newOrder1);
     engine.OnMessage(newOrder2);
@@ -165,8 +161,7 @@ TEST_CASE("Test inbound order hits multiple resting", "[fills]") {
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
     auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder3 =
-        ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1234);
+    auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1234);
 
     std::vector<Trade> expectedTrades;
     expectedTrades.push_back(ConstructTrade("BTCUSD", "3", "1", 100, 1234));
@@ -183,8 +178,7 @@ TEST_CASE("Test inbound order hits multiple resting", "[fills]") {
     REQUIRE(engine.Dump().empty());
 }
 
-TEST_CASE("Test inbound order hits multiple resting before resting",
-          "[fills]") {
+TEST_CASE("Test inbound order hits multiple resting before resting", "[fills]") {
     std::vector<Trade> actualTrades;
 
     MatchingEngine engine([&](const MessageHeader &msg) {
@@ -194,8 +188,7 @@ TEST_CASE("Test inbound order hits multiple resting before resting",
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
     auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder3 =
-        ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 300, 1234);
+    auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 300, 1234);
 
     std::vector<Trade> expectedTrades;
     expectedTrades.push_back(ConstructTrade("BTCUSD", "3", "1", 100, 1234));
@@ -230,8 +223,7 @@ TEST_CASE("Test inbound order trades at best price", "[fills]") {
     });
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder2 =
-        ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1230);
+    auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 100, 1230);
 
     std::vector<Trade> expectedTrades;
     expectedTrades.push_back(ConstructTrade("BTCUSD", "2", "1", 100, 1234));
@@ -256,8 +248,7 @@ TEST_CASE("Test inbound order trades at multiple price levels", "[fills]") {
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
     auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Buy, 100, 1235);
-    auto newOrder3 =
-        ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1230);
+    auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1230);
 
     // order should be by best price level
     std::vector<Trade> expectedTrades;
@@ -275,8 +266,7 @@ TEST_CASE("Test inbound order trades at multiple price levels", "[fills]") {
     REQUIRE(engine.Dump().empty());
 }
 
-TEST_CASE("Test inbound order hits multiple orders by time priority",
-          "[fills]") {
+TEST_CASE("Test inbound order hits multiple orders by time priority", "[fills]") {
     std::vector<Trade> actualTrades;
 
     MatchingEngine engine([&](const MessageHeader &msg) {
@@ -286,8 +276,7 @@ TEST_CASE("Test inbound order hits multiple orders by time priority",
 
     auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
     auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Buy, 100, 1234);
-    auto newOrder3 =
-        ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1234);
+    auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Sell, 200, 1234);
 
     // order should be by time priority
     std::vector<Trade> expectedTrades;
@@ -305,8 +294,7 @@ TEST_CASE("Test inbound order hits multiple orders by time priority",
     REQUIRE(engine.Dump().empty());
 }
 
-TEST_CASE("Test inbound order hits multiple price levels by time priority",
-          "[fills]") {
+TEST_CASE("Test inbound order hits multiple price levels by time priority", "[fills]") {
     std::vector<Trade> actualTrades;
 
     MatchingEngine engine([&](const MessageHeader &msg) {
@@ -318,8 +306,7 @@ TEST_CASE("Test inbound order hits multiple price levels by time priority",
     auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Buy, 100, 1234);
     auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Buy, 100, 1235);
     auto newOrder4 = ConstructNewOrder("4", "BTCUSD", SideEnum::Buy, 100, 1235);
-    auto newOrder5 =
-        ConstructNewOrder("5", "BTCUSD", SideEnum::Sell, 400, 1234);
+    auto newOrder5 = ConstructNewOrder("5", "BTCUSD", SideEnum::Sell, 400, 1234);
 
     // order should be by best price, then by time priority
     std::vector<Trade> expectedTrades;
@@ -338,5 +325,54 @@ TEST_CASE("Test inbound order hits multiple price levels by time priority",
     REQUIRE(expectedTrades == actualTrades);
 
     // check order book is empty
+    REQUIRE(engine.Dump().empty());
+}
+
+TEST_CASE("Test inbound order hits resting order rests and gets hit later", "[fills]") {
+    std::vector<Trade> actualTrades;
+
+    MatchingEngine engine([&](const MessageHeader &msg) {
+        REQUIRE(msg.messageType == MessageTypeEnum::Trade);
+        actualTrades.push_back(static_cast<const Trade &>(msg));
+    });
+
+    auto newOrder1 = ConstructNewOrder("1", "BTCUSD", SideEnum::Buy, 100, 1234);
+    auto newOrder2 = ConstructNewOrder("2", "BTCUSD", SideEnum::Sell, 200, 1234);
+
+    std::vector<Trade> expectedTrades;
+    expectedTrades.push_back(ConstructTrade("BTCUSD", "2", "1", 100, 1234));
+
+    engine.OnMessage(newOrder1);
+    engine.OnMessage(newOrder2);
+
+    REQUIRE(!actualTrades.empty());
+    REQUIRE(expectedTrades == actualTrades);
+
+    // reduce order 2 quantity
+    newOrder2.quantity -= newOrder1.quantity;
+
+    // check order 2 left on book
+    std::vector<std::string> expectedOrders;
+    expectedOrders.push_back(Order(2, newOrder2).ToString());
+
+    auto actualOrders = engine.Dump();
+    REQUIRE(!actualOrders.empty());
+    REQUIRE(expectedOrders == actualOrders);
+
+    // clear completed trades
+    actualTrades.clear();
+    expectedTrades.clear();
+
+    // hit the now resting order 2
+    auto newOrder3 = ConstructNewOrder("3", "BTCUSD", SideEnum::Buy, 100, 1234);
+
+    expectedTrades.push_back(ConstructTrade("BTCUSD", "3", "2", 100, 1234));
+
+    engine.OnMessage(newOrder3);
+
+    REQUIRE(!actualTrades.empty());
+    REQUIRE(actualTrades == expectedTrades);
+
+    // order book should now be empty
     REQUIRE(engine.Dump().empty());
 }

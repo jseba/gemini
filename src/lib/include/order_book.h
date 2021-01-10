@@ -1,19 +1,19 @@
 #ifndef MATCHING_ENGINE__ORDER_BOOK_H
 #define MATCHING_ENGINE__ORDER_BOOK_H
 
-#include "messages.h"
-#include "order.h"
-#include "price_level.h"
-
 #include <functional>
 #include <list>
 #include <map>
 #include <vector>
 
+#include "messages.h"
+#include "order.h"
+#include "price_level.h"
+
 namespace gemini {
 
 class OrderBook {
-  public:
+   public:
     using OrderMatchedFn = std::function<void(const Trade &)>;
 
     OrderBook(std::string symbol, OrderMatchedFn fn);
@@ -25,7 +25,7 @@ class OrderBook {
 
     std::vector<std::string> Dump() const;
 
-  private:
+   private:
     std::string m_symbol;
 
     OrderMatchedFn m_orderMatched;
@@ -58,6 +58,6 @@ class OrderBook {
     SequenceNumberIndex m_bidsBySequenceNumber;
     SequenceNumberIndex m_asksBySequenceNumber;
 };
-} // namespace gemini
+}  // namespace gemini
 
-#endif // MATCHING_ENGINE__ORDER_BOOK_H
+#endif  // MATCHING_ENGINE__ORDER_BOOK_H

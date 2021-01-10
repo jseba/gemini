@@ -1,9 +1,9 @@
 #ifndef MATCHING_ENGINE__PRICE_LEVEL_H
 #define MATCHING_ENGINE__PRICE_LEVEL_H
 
-#include "fields.h"
-
 #include <cassert>
+
+#include "fields.h"
 
 namespace gemini {
 struct PriceLevel {
@@ -11,8 +11,7 @@ struct PriceLevel {
     SideEnum::Type side;
 };
 
-constexpr bool operator<(const PriceLevel &lhs,
-                         const PriceLevel &rhs) noexcept {
+constexpr bool operator<(const PriceLevel &lhs, const PriceLevel &rhs) noexcept {
     assert(lhs.side == rhs.side);
     if (lhs.side == SideEnum::Buy) {
         return lhs.price > rhs.price;
@@ -21,6 +20,6 @@ constexpr bool operator<(const PriceLevel &lhs,
     }
 }
 
-} // namespace gemini
+}  // namespace gemini
 
-#endif // MATCHING_ENGINE__PRICE_LEVEL_H
+#endif  // MATCHING_ENGINE__PRICE_LEVEL_H

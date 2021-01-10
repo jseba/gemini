@@ -1,17 +1,17 @@
 #ifndef MATCHING_ENGINE__MATCHING_ENGINE_H
 #define MATCHING_ENGINE__MATCHING_ENGINE_H
 
-#include "messages.h"
-#include "order_book.h"
-
 #include <functional>
 #include <map>
 #include <string>
 #include <vector>
 
+#include "messages.h"
+#include "order_book.h"
+
 namespace gemini {
 class MatchingEngine {
-  public:
+   public:
     using SendMessageFn = std::function<void(const MessageHeader &msg)>;
 
     MatchingEngine(SendMessageFn fn);
@@ -20,7 +20,7 @@ class MatchingEngine {
 
     std::vector<std::string> Dump() const;
 
-  private:
+   private:
     void OnNewOrder(const NewOrder &newOrder);
 
     void HandleOrderMatched(const Trade &trade);
@@ -35,6 +35,6 @@ class MatchingEngine {
     // one order book per symbol (instrument)
     std::map<std::string, OrderBook> m_orderBooks;
 };
-} // namespace gemini
+}  // namespace gemini
 
-#endif // MATCHING_ENGINE__MATCHING_ENGINE_H
+#endif  // MATCHING_ENGINE__MATCHING_ENGINE_H
